@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "toms-data-onion", "TomsDataOnion\toms-data-onion.csproj", "{C1871B23-636A-4E27-A2DF-533D52738629}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomsDataOnion.Tests", "TomsDataOnion.Tests\TomsDataOnion.Tests.csproj", "{BE1F3CCC-BF0F-4AE1-9DD1-84FEC55F7A66}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1871B23-636A-4E27-A2DF-533D52738629}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1871B23-636A-4E27-A2DF-533D52738629}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1871B23-636A-4E27-A2DF-533D52738629}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1871B23-636A-4E27-A2DF-533D52738629}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE1F3CCC-BF0F-4AE1-9DD1-84FEC55F7A66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE1F3CCC-BF0F-4AE1-9DD1-84FEC55F7A66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE1F3CCC-BF0F-4AE1-9DD1-84FEC55F7A66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE1F3CCC-BF0F-4AE1-9DD1-84FEC55F7A66}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
