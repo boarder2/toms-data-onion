@@ -1,9 +1,14 @@
 public static class EncodingExtensions
 {
-	public static string DecodeASCII85(this string s)
+	public static string DecodeASCII85String(this string s)
+	{
+		return ASCIIEncoding.Default.GetString(s.DecodeASCII85Bytes());
+	}
+
+	public static byte[] DecodeASCII85Bytes(this string s)
 	{
 		s = s.Replace(" ", "").Replace("\r\n", "").Replace("\n", "").Replace("z", "!!!!");
-		var fileBytes = System.Text.ASCIIEncoding.Default.GetBytes(s);
+		var fileBytes = ASCIIEncoding.Default.GetBytes(s);
 
 		var fileLoc = 0;
 		var result = new List<Byte>();
@@ -28,6 +33,6 @@ public static class EncodingExtensions
 			if (fileLoc >= fileBytes.Length - 1) break;
 			fileLoc += 5;
 		}
-		return System.Text.ASCIIEncoding.Default.GetString(result.ToArray());
+		return result.ToArray();
 	}
 }

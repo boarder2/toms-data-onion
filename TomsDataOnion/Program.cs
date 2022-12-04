@@ -2,5 +2,9 @@
 var payload = fileText.GetPayload();
 
 //Stage 1
-var stage1 = payload.DecodeASCII85();
-Console.WriteLine(stage1);
+var stage1 = payload.DecodeASCII85String();
+
+var stage2Bytes = stage1.DecodeASCII85Bytes();
+
+stage2Bytes.FlipAndRotateBits();
+Console.WriteLine(ASCIIEncoding.Default.GetString(stage2Bytes));
