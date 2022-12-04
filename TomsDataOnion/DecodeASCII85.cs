@@ -2,13 +2,13 @@ public static class EncodingExtensions
 {
 	public static string DecodeASCII85String(this string s)
 	{
-		return ASCIIEncoding.Default.GetString(s.DecodeASCII85Bytes());
+		return ASCIIEncoding.ASCII.GetString(s.DecodeASCII85Bytes());
 	}
 
 	public static byte[] DecodeASCII85Bytes(this string s)
 	{
-		s = s.Replace(" ", "").Replace("\r\n", "").Replace("\n", "").Replace("z", "!!!!");
-		var fileBytes = ASCIIEncoding.Default.GetBytes(s);
+		s = s.Replace(" ", "").Replace("\r", "").Replace("\n", "").Replace("z", "!!!!");
+		var fileBytes = ASCIIEncoding.ASCII.GetBytes(s);
 
 		var fileLoc = 0;
 		var result = new List<Byte>();
