@@ -1,6 +1,6 @@
 namespace TomsDataOnion.Tests;
 
-public class Tests
+public class DecodeASCII85Tests
 {
     string encoded = """
 9jqo^BlbD-BleB1DJ+*+F(f,q/0JhKF<GL>Cj@.4Gp$d7F!,L7@<6@)/0JDEF<G%<+EV:2F!,O<
@@ -12,16 +12,16 @@ D.RTpAKYo'+CT/5+Cei#DII?(E,9)oF*2M7/c
 
     const string expected = "Man is distinguished, not only by his reason, but by this singular passion from other animals, which is a lust of the mind, that by a perseverance of delight in the continued and indefatigable generation of knowledge, exceeds the short vehemence of any carnal pleasure.";
 
-    private string _result;
+    private string _result = "";
 
     [SetUp]
     public void Setup()
     {
-        _result = encoded.DecodeASCII85();
+        _result = encoded.DecodeASCII85String();
     }
 
     [Test]
-    public void Test1()
+    public void WikipediaDecodeSuccessful()
     {
         Assert.AreEqual(expected, _result);
     }

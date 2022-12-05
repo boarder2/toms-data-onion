@@ -2,5 +2,10 @@
 var payload = fileText.GetPayload();
 
 //Stage 1
-var stage1 = payload.DecodeASCII85();
-Console.WriteLine(stage1);
+var layer1Text = payload.DecodeASCII85String();
+File.WriteAllText("Layers/Layer1.txt", layer1Text);
+
+var layer1Payload = layer1Text.GetPayload();
+var layer2Bytes = layer1Payload.DecodeASCII85Bytes();
+layer2Bytes.FlipAndRotateBits();
+await File.WriteAllTextAsync("Layers/Layer2.txt", ASCIIEncoding.ASCII.GetString(layer2Bytes));

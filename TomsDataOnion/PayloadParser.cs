@@ -1,4 +1,4 @@
-public static class payload
+public static class Payload
 {
 	public static string GetPayload(this string s)
 	{
