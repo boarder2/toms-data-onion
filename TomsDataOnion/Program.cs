@@ -8,4 +8,4 @@ File.WriteAllText("Layers/Layer1.txt", layer1Text);
 var layer1Payload = layer1Text.GetPayload();
 var layer2Bytes = layer1Payload.DecodeASCII85Bytes();
 layer2Bytes.FlipAndRotateBits();
-File.WriteAllText("Layers/Layer2.txt", ASCIIEncoding.ASCII.GetString(layer2Bytes));
+await File.WriteAllTextAsync("Layers/Layer2.txt", ASCIIEncoding.ASCII.GetString(layer2Bytes));
