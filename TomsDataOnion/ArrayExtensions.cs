@@ -40,4 +40,24 @@ public static class ArrayExtensions
         }
         return valid.ToArray();
     }
+
+    // Modifies itself but also returns itself for fluent use.
+    public static byte[] DecryptLayer4(this byte[] bytes)
+    {
+        // Obfuscated into byte representation to avoid spoilers.
+        // I got the key by reverse engineering what I knew about the expected results based on previous layers.
+        // I could store the computed key here in code instead, but leaving this is at least a bit of proof of work.
+        var desiredResult = new byte[] {61,61,91,32,76,97,121,101,114,32,52,47,54,58,32,78,101,116,119,111,114,107,32,84,114,97,102,102,105,99,32,93};
+        var decryptKey = new byte[32];
+        for (int iByte = 0; iByte < desiredResult.Length; iByte++)
+        {
+            decryptKey[iByte] = (byte)(bytes[iByte] ^ desiredResult[iByte]);
+        }
+
+        for (int iByte = 0; iByte < bytes.Length; iByte++)
+        {
+            bytes[iByte] = (byte)(bytes[iByte] ^ (decryptKey[iByte % 32]));
+        }
+        return bytes;
+    }
 }

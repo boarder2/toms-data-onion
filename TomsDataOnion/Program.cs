@@ -15,3 +15,7 @@ var layer2Payload = layer2Text.GetPayload();
 var layer3Bytes = layer2Payload.DecodeASCII85Bytes();
 var layer3Text = ASCIIEncoding.ASCII.GetString(layer3Bytes.RemoveParityFailures());
 await File.WriteAllTextAsync("Layers/Layer3.txt", layer3Text);
+
+var layer4Bytes = layer3Text.GetPayload().DecodeASCII85Bytes().DecryptLayer4();
+var layer4Text = ASCIIEncoding.ASCII.GetString(layer4Bytes);
+await File.WriteAllTextAsync("Layers/Layer4.txt", layer4Text);
