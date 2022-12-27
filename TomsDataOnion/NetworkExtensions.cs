@@ -1,63 +1,93 @@
-public static class ArrayExtensions
+public static class NetworkExtensions
 {
-    public static void FlipAndRotateBits(this byte[] bytes)
+
+    public static byte[] ReadUDP(this byte[] bytes)
     {
-        for (var i = 0; i < bytes.Length; i++)
+        var result = new List<byte>();
+        Span<byte> data = bytes;
+        for (int iByte = 0; iByte < data.Length; iByte++)
         {
-            var flip = (bytes[i] ^ 0b0101_0101);
-            var final = (flip >> 1) | ((flip & 1) << 7);
-            bytes[i] = (byte)final;
+            var ipHeader = new IPHeader(data.Slice(iByte, 20));
+            iByte += 20;
+            var udpHeader = new UDPHeader(data.Slice(iByte, 8));
+            iByte += 8;
+
+            var packetData = data.Slice(iByte, udpHeader.Length);
+        }
+
+        return result.ToArray();
+    }
+
+    private class UDPHeader
+    {
+        public int SourcePort { get; private set;}
+        public int DestinationPort { get; private set;}
+        public int Length { get; private set;}
+        public int Checksum { get; private set;}
+
+        public UDPHeader(Span<byte> headerData)
+        {
+            // Parse the source and destination ports
+            SourcePort = (int)((headerData[0] << 8) | headerData[1]);
+            DestinationPort = (int)((headerData[2] << 8) | headerData[3]);
+
+            // Parse the length
+            Length = (int)((headerData[4] << 8) | headerData[5]);
+
+            // Parse the checksum
+            Checksum = (int)((headerData[6] << 8) | headerData[7]);
         }
     }
 
-    public static byte[] RemoveParityFailures(this byte[] bytes)
+    private class IPHeader
     {
-        var valid = new List<byte>();
-        UInt64 section = 0;
-        int sectionByteCount = 0;
-        for (var iByte = 0; iByte < bytes.Length; iByte++)
+        // Constructor that takes in a byte array and parses the header
+        public IPHeader(Span<byte> headerData)
         {
-            var count1 = 0;
-            for (int iBit = 1; iBit < 8; iBit++)
-            {
-                count1 += (bytes[iByte] >> iBit) & 1;
-            }
-            if ((count1 % 2) == (bytes[iByte] & 1)) // parity check
-            {
-                sectionByteCount++;
-                section |= (byte)(bytes[iByte] >> 1);
-                section <<= 7;
-                if (sectionByteCount % 8 == 0)
-                {
-                    section >>= 7;
-                    var sectionBytes = BitConverter.GetBytes(section);
-                    if (BitConverter.IsLittleEndian) { Array.Reverse(sectionBytes); }
-                    valid.AddRange(sectionBytes.Skip(1));
-                    section = 0;
-                    sectionByteCount = 0;
-                }
-            }
-        }
-        return valid.ToArray();
-    }
+            // Parse the version and header length
+            Version = (int)(headerData[0] >> 4);
+            HeaderLength = (int)(headerData[0] & 0x0F) * 4;
 
-    // Modifies itself but also returns itself for fluent use.
-    public static byte[] DecryptLayer4(this byte[] bytes)
-    {
-        // Obfuscated into byte representation to avoid spoilers.
-        // I got the key by reverse engineering what I knew about the expected results based on previous layers.
-        // I could store the computed key here in code instead, but leaving this is at least a bit of proof of work.
-        var desiredResult = new byte[] {61,61,91,32,76,97,121,101,114,32,52,47,54,58,32,78,101,116,119,111,114,107,32,84,114,97,102,102,105,99,32,93};
-        var decryptKey = new byte[32];
-        for (int iByte = 0; iByte < desiredResult.Length; iByte++)
-        {
-            decryptKey[iByte] = (byte)(bytes[iByte] ^ desiredResult[iByte]);
+            // Parse the service type
+            ServiceType = (int)((headerData[1] >> 2) & 0x3F);
+
+            // Parse the total length
+            TotalLength = (int)((headerData[2] << 8) | headerData[3]);
+
+            // Parse the identification
+            Identification = (int)((headerData[4] << 8) | headerData[5]);
+
+            // Parse the flags and fragment offset
+            Flags = (int)((headerData[6] >> 5) & 0x07);
+            FragmentOffset = (int)(((headerData[6] & 0x1F) << 8) | headerData[7]);
+
+            // Parse the time-to-live
+            TimeToLive = (int)headerData[8];
+
+            // Parse the protocol
+            Protocol = (int)headerData[9];
+
+            // Parse the header checksum
+            HeaderChecksum = (int)((headerData[10] << 8) | headerData[11]);
+
+            // Parse the source and destination addresses
+            SourceAddress = headerData[12].ToString() + "." + headerData[13].ToString() + "." + headerData[14].ToString() + "." + headerData[15].ToString();
+            DestinationAddress = headerData[16].ToString() + "." + headerData[17].ToString() + "." + headerData[18].ToString() + "." + headerData[19].ToString();
         }
 
-        for (int iByte = 0; iByte < bytes.Length; iByte++)
-        {
-            bytes[iByte] = (byte)(bytes[iByte] ^ (decryptKey[iByte % 32]));
-        }
-        return bytes;
+        // Properties to allow access to the header information
+        public int Version { get; private set; }
+        public int HeaderLength { get; private set;}
+        public int ServiceType { get; private set; }
+        public int TotalLength { get; private set; }
+        public int Identification { get; private set; }
+        public int Flags { get; private set; }
+        public int FragmentOffset { get; private set; }
+        public int TimeToLive { get; private set; }
+        public int Protocol { get; private set; }
+        public int HeaderChecksum { get; private set; }
+        public string SourceAddress { get; private set; }
+        public string DestinationAddress { get; private set; }
     }
+
 }
