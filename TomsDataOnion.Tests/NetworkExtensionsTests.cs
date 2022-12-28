@@ -21,6 +21,6 @@ public class NetworkExtensionsTests
 	)]
 	public void GetsExpectedChecksum(byte[] input, ushort expected)
 	{
-		Assert.AreEqual(expected, NetworkExtensions.CalculateChecksum((ReadOnlySpan<byte>) input, input.Length));
+		Assert.AreEqual(expected, NetworkExtensions.CalculateChecksum((ReadOnlySpan<byte>) input));
 	}
 }
