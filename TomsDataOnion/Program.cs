@@ -21,6 +21,6 @@ var layer4Text = ASCIIEncoding.ASCII.GetString(layer4Bytes);
 await File.WriteAllTextAsync("Layers/Layer4.txt", layer4Text);
 
 var layer5Payload = layer4Text.GetPayload().DecodeASCII85Bytes();
-var layer5Bytes = layer5Payload.ReadUDP();
+var layer5Bytes = layer5Payload.ReadValidUDP();
 var layer5Text = ASCIIEncoding.ASCII.GetString(layer5Bytes);
 await File.WriteAllTextAsync("Layers/Layer5.txt", layer5Text);
