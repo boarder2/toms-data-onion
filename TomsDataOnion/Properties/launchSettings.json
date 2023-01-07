@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "toms-data-onion": {
+      "commandName": "Project",
+      "workingDirectory": ".."
+    }
+  }
+}
