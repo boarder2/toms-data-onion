@@ -7,7 +7,7 @@ Directory.CreateDirectory(outputDirectory);
 
 //Stage 1
 var layer1Text = payload.DecodeASCII85String();
-File.WriteAllText($"{outputDirectory}/ Layer1.txt", layer1Text);
+File.WriteAllText($"{outputDirectory}/Layer1.txt", layer1Text);
 
 var layer1Payload = layer1Text.GetPayload();
 var layer2Bytes = layer1Payload.DecodeASCII85Bytes();
@@ -28,3 +28,8 @@ var layer5Payload = layer4Text.GetPayload().DecodeASCII85Bytes();
 var layer5Bytes = layer5Payload.ReadValidUDP();
 var layer5Text = ASCIIEncoding.ASCII.GetString(layer5Bytes);
 await File.WriteAllTextAsync($"{outputDirectory}/Layer5.txt", layer5Text);
+
+var layer6Payload = layer5Text.GetPayload().DecodeASCII85Bytes();
+var layer6Bytes = layer6Payload.DecryptLayer6();
+var layer6Text = ASCIIEncoding.ASCII.GetString(layer6Bytes);
+await File.WriteAllTextAsync($"{outputDirectory}/Layer6.txt", layer6Text);
