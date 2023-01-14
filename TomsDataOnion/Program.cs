@@ -33,3 +33,7 @@ var layer6Payload = layer5Text.GetPayload().DecodeASCII85Bytes();
 var layer6Bytes = layer6Payload.DecryptLayer6();
 var layer6Text = ASCIIEncoding.ASCII.GetString(layer6Bytes);
 await File.WriteAllTextAsync($"{outputDirectory}/Layer6.txt", layer6Text);
+
+var layer7Payload = layer6Text.GetPayload().DecodeASCII85Bytes();
+var vm = new VM(layer7Payload);
+vm.Run();
