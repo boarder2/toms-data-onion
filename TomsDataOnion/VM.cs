@@ -1,32 +1,43 @@
-public class VM
+public ref struct VM
 {
-	Dictionary<string, byte> reg8 = new Dictionary<string, byte>
-	{
-		{"a", 0},
-		{"b", 0},
-		{"c", 0},
-		{"d", 0},
-		{"e", 0},
-		{"f", 0}
-	};
+	private const int REG8_A = 0;
+	private const int REG8_B = 1;
+	private const int REG8_C = 2;
+	private const int REG8_D = 3;
+	private const int REG8_E = 4;
+	private const int REG8_F = 5;
+	private const int REG32_LA = 0;
+	private const int REG32_LB = 1;
+	private const int REG32_LC = 2;
+	private const int REG32_LD = 3;
+	private const int REG32_PTR = 4;
+	private const int REG32_PC = 5;
 
-	Dictionary<string, UInt32> reg32 = new Dictionary<string, UInt32>
-	{
-		{"la", 0},
-		{"lb", 0},
-		{"lc", 0},
-		{"ld", 0},
-		{"ptr", 0},
-		{"pc", 0}
-	};
+	byte[] _reg8 = new byte[5];
+	UInt32[] _reg32 = new UInt32[5];
 
-	public VM(ReadOnlySpan<byte> program)
-	{
+	private Span<byte> _memory;
 
+	public VM(Span<byte> program)
+	{
+		_memory = program;
 	}
 
 	public void Run()
 	{
 
+	}
+
+	private void WriteReg8(byte dest, byte value)
+	{
+		if(dest == 7)
+		{
+			var memLoc = _reg32[REG32_PTR] + _reg8[REG8_C];
+		}
+	}
+
+	private void WriteMem(int loc, byte value)
+	{
+		_memory[loc] = value;
 	}
 }
